@@ -1,11 +1,14 @@
-FROM node:18 AS web-build
+FROM node:16 AS web-build
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+
+RUN npm install --legacy-peer-deps
 
 COPY . .
+
+ENV NODE_OPTIONS=--openssl-legacy-provider
 
 RUN npm run build --prod
 
