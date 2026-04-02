@@ -1,4 +1,4 @@
-FROM node:16 AS web-build
+FROM node:14 AS web-build
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
-RUN node --openssl-legacy-provider ./node_modules/@angular/cli/bin/ng build --prod
+RUN npm run build --prod
 
 
 FROM nginx:alpine
