@@ -8,9 +8,7 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
-ENV NODE_OPTIONS=--openssl-legacy-provider
-
-RUN npm run build --prod
+RUN node --openssl-legacy-provider ./node_modules/@angular/cli/bin/ng build --prod
 
 
 FROM nginx:alpine
