@@ -1,35 +1,20 @@
-FROM node:14 AS web-build
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install --legacy-peer-deps
-
-COPY . .
-
-RUN npm run build --prod
-
-
 FROM nginx:alpine
 
-COPY --from=web-build /app/dist/client /usr/share/nginx/html
+COPY client/dist/client /usr/share/nginx/html
 
 EXPOSE 80
 
+CMD ["nginx", "-g", "daemon off;"]
+
+# Build Angular Application inside Remote Server
+# cd client
+# npm install
+# npm run build
+
+# This generates the production build inside:
+# client/dist/client
+# Build Docker Image - docker build -t emartapp:v1 .
+# Run Container - docker run -d -p 80:80 --name emart-container emartapp:v1
+# Access Application - Open the EC2 public IP in browser: http://<EC2_PUBLIC_IP>
 
 
-# FROM node:14 AS web-build
-# WORKDIR /usr/src/app
-# COPY ./ ./client
-# RUN cd client && npm install && npm run build --prod
-
-# # Use official nginx image as the base image
-# FROM nginx:latest
-
-# # Copy the build output to replace the default nginx contents.
-# COPY --from=web-build /usr/src/app/client/dist/client/ /usr/share/nginx/html
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# # Expose port 4200
-# EXPOSE 4200
