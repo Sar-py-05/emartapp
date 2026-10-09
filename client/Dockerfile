@@ -4,7 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build -- --prod
+RUN NODE_OPTIONS="--max-old-space-size=512" npm run build -- --prod --build-optimizer=false
+
 
 # Stage 2: Copy built assets to Nginx
 FROM nginx:alpine
